@@ -36,6 +36,11 @@ services:
         value: WARNING
       - key: FRONTEND_URL
         value: https://cloth-by-afs.onrender.com
+      # Admin superuser — set these in Render dashboard (sync: false keeps them secret)
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
       # Email — fill in your SMTP credentials in the Render dashboard (sync: false = secret)
       # - key: EMAIL_HOST_USER
       #   sync: false

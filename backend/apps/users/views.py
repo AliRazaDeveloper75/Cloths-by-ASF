@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 import secrets
 
+from utils.emails import send_welcome_email
 from .models import ShippingAddress
 from .serializers import (
     CustomTokenObtainPairSerializer, RegisterSerializer, UserSerializer,
@@ -34,6 +35,12 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
+        # Send welcome email (non-blocking)
+        try:
+            send_welcome_email(user)
+        except Exception:
+            pass
 
         # Generate JWT tokens on register
         refresh = RefreshToken.for_user(user)

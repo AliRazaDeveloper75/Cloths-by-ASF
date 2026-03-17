@@ -3,8 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.core.mail import send_mail
-from django.conf import settings as django_settings
+from utils.emails import send_order_confirmation_email, send_order_status_email
 
 from .models import Order, OrderItem
 from .serializers import OrderSerializer, PlaceOrderSerializer, UpdateOrderStatusSerializer
@@ -156,26 +155,7 @@ class PlaceOrderView(APIView):
 
         # --- Confirmation email ---
         try:
-            payment_note = (
-                "Your order will be paid on delivery."
-                if payment_method == 'cod'
-                else "Please complete your online payment to confirm the order."
-            )
-            send_mail(
-                subject=f'Order #{order.order_number} – {"Confirmed" if payment_method == "cod" else "Awaiting Payment"}',
-                message=(
-                    f"Hi {request.user.first_name},\n\n"
-                    f"Your order #{order.order_number} has been placed!\n"
-                    f"Total: PKR {order.total}\n"
-                    f"Payment: {order.get_payment_method_display()}\n"
-                    f"{payment_note}\n\n"
-                    f"Track at: {django_settings.FRONTEND_URL}/orders/{order.id}\n\n"
-                    f"Thank you for shopping with Cloth by AFS!"
-                ),
-                from_email=django_settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[request.user.email],
-                fail_silently=True,
-            )
+            send_order_confirmation_email(order)
         except Exception:
             pass
 
@@ -277,6 +257,13 @@ class AdminUpdateOrderStatusView(APIView):
                 order.payment_status = 'paid'
 
         order.save()
+
+        # --- Status update email ---
+        try:
+            send_order_status_email(order)
+        except Exception:
+            pass
+
         return Response(OrderSerializer(order).data)
 
 
