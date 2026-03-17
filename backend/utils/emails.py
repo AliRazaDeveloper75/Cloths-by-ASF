@@ -42,12 +42,14 @@ def _divider():
 
 def _base(content, preheader=''):
     year = datetime.date.today().year
-    pre = (
-        f'<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">'
-        f'{preheader}&nbsp;' * 3
-        f'</div>'
-        if preheader else ''
-    )
+    if preheader:
+        pre = (
+            '<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">'
+            + preheader + ('&nbsp;' * 60)
+            + '</div>'
+        )
+    else:
+        pre = ''
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
