@@ -1,0 +1,41 @@
+# ── Python / Django ───────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Django
+*.log
+*.pot
+db.sqlite3
+media/
+staticfiles/
+
+# Environment variables — NEVER commit secrets
+.env
+.env.*
+!.env.example
+
+# ── Node / React ──────────────────────────────────────────
+node_modules/
+dist/
+.cache/
+*.local
+
+# ── IDEs ──────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
