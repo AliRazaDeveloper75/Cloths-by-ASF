@@ -19,7 +19,9 @@ pip install \
   drf-yasg \
   whitenoise \
   gunicorn \
-  django-extensions
+  django-extensions \
+  cloudinary \
+  django-cloudinary-storage
 
 echo "==> Collecting static files..."
 python manage.py collectstatic --no-input
