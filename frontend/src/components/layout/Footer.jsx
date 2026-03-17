@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import {
   FaFacebookF, FaInstagram, FaYoutube, FaTwitter,
-  FaTruck, FaUndo, FaArrowRight,
+  FaTruck, FaUndo, FaArrowRight, FaWhatsapp,
 } from 'react-icons/fa'
 import { MdLock, MdLocationOn, MdPhone, MdEmail, MdAccessTime } from 'react-icons/md'
 
@@ -106,7 +106,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <MdPhone className="w-4 h-4 text-[#f09c27] flex-shrink-0" />
-                <a href="tel:+923001234567" className="hover:text-[#f09c27] transition-colors">+92 300 1234567</a>
+                <a href="tel:+923134001623" className="hover:text-[#f09c27] transition-colors">+92 313 4001623</a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <FaWhatsapp className="w-4 h-4 flex-shrink-0" style={{ color: '#25D366' }} />
+                <a href="https://wa.me/923134001623" target="_blank" rel="noopener noreferrer" className="hover:text-[#f09c27] transition-colors">WhatsApp Us</a>
               </li>
               <li className="flex items-center gap-2.5">
                 <MdEmail className="w-4 h-4 text-[#f09c27] flex-shrink-0" />
