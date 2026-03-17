@@ -37,33 +37,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ── Media files ───────────────────────────────────────────
-# Render filesystem is ephemeral — Cloudinary stores uploads permanently (free).
-CLOUDINARY_URL = config('CLOUDINARY_URL', default='')
-
-if CLOUDINARY_URL:
-    import cloudinary
-    import cloudinary.uploader
-    import cloudinary.api
-
-    # django-cloudinary-storage reads CLOUDINARY_URL automatically
-    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    MEDIA_URL = '/media/'  # Cloudinary returns absolute URLs; this is a fallback
-
-elif config('USE_S3', default=False, cast=bool):
-    AWS_ACCESS_KEY_ID        = config('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY    = config('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME  = config('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_REGION_NAME       = config('AWS_S3_REGION_NAME', default='us-east-1')
-    AWS_S3_CUSTOM_DOMAIN     = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    AWS_DEFAULT_ACL          = 'public-read'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    DEFAULT_FILE_STORAGE     = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
-else:
-    MEDIA_URL  = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL  = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # ── CORS ──────────────────────────────────────────────────
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())

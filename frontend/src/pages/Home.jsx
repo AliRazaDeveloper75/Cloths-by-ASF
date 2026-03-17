@@ -14,6 +14,7 @@ import {
 } from 'react-icons/hi'
 import api from '@/services/api'
 import ProductGrid from '@/components/product/ProductGrid'
+import { DEMO_PRODUCTS } from '@/data/demoProducts'
 
 // 6 fashion e-commerce hero banners
 const HERO_SLIDES = [
@@ -191,10 +192,16 @@ export default function Home() {
       api.get('/products/categories/'),
       api.get('/products/?ordering=-created_at&page_size=8'),
     ]).then(([featRes, catRes, newRes]) => {
-      setFeatured(featRes.data?.results ?? featRes.data ?? [])
-      setCategories((catRes.data?.results ?? catRes.data ?? []).slice(0, 6))
-      setNewArrivals((newRes.data?.results ?? newRes.data ?? []).slice(0, 8))
-    }).catch(() => {}).finally(() => setLoading(false))
+      const feat = featRes.data?.results ?? featRes.data ?? []
+      const cats = (catRes.data?.results ?? catRes.data ?? []).slice(0, 6)
+      const newest = (newRes.data?.results ?? newRes.data ?? []).slice(0, 8)
+      setFeatured(feat.length ? feat : DEMO_PRODUCTS.filter(p => p.is_featured))
+      setCategories(cats)
+      setNewArrivals(newest.length ? newest : DEMO_PRODUCTS)
+    }).catch(() => {
+      setFeatured(DEMO_PRODUCTS.filter(p => p.is_featured))
+      setNewArrivals(DEMO_PRODUCTS)
+    }).finally(() => setLoading(false))
   }, [])
 
   const cur = HERO_SLIDES[slide]

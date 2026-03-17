@@ -5,6 +5,7 @@ import api from '@/services/api'
 import ProductGrid from '@/components/product/ProductGrid'
 import ProductFilters from '@/components/product/ProductFilters'
 import Pagination from '@/components/common/Pagination'
+import { DEMO_PRODUCTS } from '@/data/demoProducts'
 
 export default function ProductList() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -37,14 +38,15 @@ export default function ProductList() {
       try {
         const res = await api.get('/products/', { params })
         const data = res.data
-        setProducts(data.results || [])
+        const results = data.results || []
+        setProducts(results.length ? results : DEMO_PRODUCTS)
         setPagination({
-          count: data.count,
-          totalPages: Math.ceil(data.count / 12),
+          count: results.length ? data.count : DEMO_PRODUCTS.length,
+          totalPages: results.length ? Math.ceil(data.count / 12) : 1,
           currentPage: filters.page,
         })
       } catch {
-        setProducts([])
+        setProducts(DEMO_PRODUCTS)
       } finally {
         setLoading(false)
       }

@@ -36,10 +36,6 @@ services:
         value: WARNING
       - key: FRONTEND_URL
         value: https://cloth-by-afs.onrender.com
-      # Cloudinary — free image storage (no more broken images on Render)
-      # Get your URL from cloudinary.com → Dashboard → "API Environment variable"
-      - key: CLOUDINARY_URL
-        sync: false
       # Admin superuser — set these in Render dashboard (sync: false keeps them secret)
       - key: ADMIN_EMAIL
         sync: false
