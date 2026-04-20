@@ -4,9 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
 from rest_framework_simplejwt.views import TokenRefreshView
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-from rest_framework import permissions
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 
 def health(request):
@@ -55,17 +53,6 @@ def health(request):
 </html>"""
     return HttpResponse(html)
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Cloth by AFS API",
-        default_version='v1',
-        description="Full-featured E-Commerce API for Cloth by AFS",
-        contact=openapi.Contact(email="admin@clothbyafs.com"),
-    ),
-    public=True,
-    permission_classes=[permissions.AllowAny],
-)
-
 urlpatterns = [
     path('', health, name='health'),
     path('admin/', admin.site.urls),
@@ -83,9 +70,10 @@ urlpatterns = [
     # JWT token refresh
     path('api/v1/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    # Swagger docs
-    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # API docs (drf-spectacular)
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/',   SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/',  SpectacularRedocView.as_view(url_name='schema'),   name='redoc'),
 ]
 
 if settings.DEBUG:
