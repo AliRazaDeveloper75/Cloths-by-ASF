@@ -1,69 +1,81 @@
 """
-Production settings for Render deployment.
+Production settings for AWS EC2 deployment.
 """
-import dj_database_url
 from .base import *
 
-# ── Security ──────────────────────────────────────────────
 DEBUG = False
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=Csv())
 
-# ── Database — Render provides DATABASE_URL automatically ─
-DATABASE_URL = config('DATABASE_URL', default='')
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+# Database — PostgreSQL (Docker service 'db' or explicit host)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default='cloth_by_afs'),
+        'USER': config('DB_USER', default='postgres'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST', default='db'),
+        'PORT': config('DB_PORT', default='5432'),
+        'CONN_MAX_AGE': 600,
+        'CONN_HEALTH_CHECKS': True,
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME', default='cloth_by_afs'),
-            'USER': config('DB_USER', default='postgres'),
-            'PASSWORD': config('DB_PASSWORD', default=''),
-            'HOST': config('DB_HOST', default='localhost'),
-            'PORT': config('DB_PORT', default='5432'),
-        }
-    }
+}
 
-# ── Static files (WhiteNoise) ─────────────────────────────
+# Static files — served by host Nginx from /var/www/cloths-by-asf/staticfiles
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ── Media files ───────────────────────────────────────────
-MEDIA_URL  = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Media files — local storage (bind-mounted to host) or S3
+USE_S3 = config('USE_S3', default=False, cast=bool)
+if USE_S3:
+    DEFAULT_FILE_STORAGE      = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_ACCESS_KEY_ID         = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY     = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME   = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME        = config('AWS_S3_REGION_NAME', default='eu-north-1')
+    AWS_S3_FILE_OVERWRITE     = False
+    AWS_DEFAULT_ACL           = None
+    MEDIA_URL = f"https://{config('AWS_STORAGE_BUCKET_NAME')}.s3.amazonaws.com/"
+else:
+    MEDIA_URL  = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
-# ── CORS ──────────────────────────────────────────────────
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())
+# CORS
+CORS_ALLOWED_ORIGINS   = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())
 CORS_ALLOW_CREDENTIALS = True
 
-# ── CSRF ──────────────────────────────────────────────────
+# CSRF
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
-# ── Security headers ──────────────────────────────────────
+# Security headers
 SECURE_BROWSER_XSS_FILTER      = True
 SECURE_CONTENT_TYPE_NOSNIFF    = True
 X_FRAME_OPTIONS                = 'DENY'
 SECURE_HSTS_SECONDS            = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD            = True
-# Render handles SSL termination at the load balancer
-SECURE_SSL_REDIRECT   = False
+# Set SECURE_SSL_REDIRECT=True in .env once Nginx SSL (HTTPS) is configured
+SECURE_SSL_REDIRECT   = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE    = True
 
-# ── Logging ───────────────────────────────────────────────
+# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {'console': {'class': 'logging.StreamHandler'}},
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
     'root': {'handlers': ['console'], 'level': 'WARNING'},
     'loggers': {
         'django': {
