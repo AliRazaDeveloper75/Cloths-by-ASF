@@ -15,11 +15,12 @@ echo "======================================================"
 echo ""
 echo "==> [1/7] Installing system packages..."
 sudo apt-get update -q
-sudo apt-get install -y -q python3-pip python3-venv nodejs npm nginx curl git
+sudo apt-get install -y -q python3-pip python3-venv nginx curl git
 
-# Install Node 20 (if not already)
-if ! node -v | grep -q "v20"; then
+# Install Node.js 20 via NodeSource (includes npm — do NOT install Ubuntu's npm separately)
+if ! node -v 2>/dev/null | grep -q "v20"; then
     curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+    sudo apt-get remove -y npm 2>/dev/null || true
     sudo apt-get install -y nodejs
 fi
 
