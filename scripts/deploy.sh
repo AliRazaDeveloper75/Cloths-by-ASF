@@ -1,58 +1,67 @@
 #!/bin/bash
-# AWS EC2 deployment script — run from project root on the server.
+# AWS EC2 deployment script (venv-based, no Docker)
 # Usage: bash scripts/deploy.sh
 set -e
 
-APP_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+APP_DIR="/home/ubuntu/Cloths-by-ASF"
+BACKEND="$APP_DIR/backend"
+FRONTEND="$APP_DIR/frontend"
+VENV="$BACKEND/venv/bin"
 WEB_ROOT="/var/www/cloths-by-asf"
 
 echo "======================================================"
 echo "  Deploying Cloths by ASF  →  AWS EC2"
 echo "======================================================"
 
+# ── 1. Pull latest code ────────────────────────────────────
 echo ""
-echo "==> [1/5] Pulling latest code from main..."
+echo "==> [1/6] Pulling latest code..."
 cd "$APP_DIR"
 git pull origin main
 
+# ── 2. Python dependencies ────────────────────────────────
 echo ""
-echo "==> [2/5] Building React frontend..."
-cd "$APP_DIR/frontend"
+echo "==> [2/6] Installing Python dependencies..."
+"$VENV/pip" install -r "$BACKEND/requirements.txt" -q
+
+# ── 3. Django: migrate + collectstatic ───────────────────
+echo ""
+echo "==> [3/6] Running migrations & collecting static files..."
+cd "$BACKEND"
+DJANGO_SETTINGS_MODULE=config.settings.production \
+    "$VENV/python" manage.py migrate --noinput
+DJANGO_SETTINGS_MODULE=config.settings.production \
+    "$VENV/python" manage.py collectstatic --noinput
+
+sudo mkdir -p "$WEB_ROOT/staticfiles"
+sudo cp -r "$BACKEND/staticfiles/." "$WEB_ROOT/staticfiles/"
+
+# ── 4. Build React frontend ───────────────────────────────
+echo ""
+echo "==> [4/6] Building React frontend..."
+cd "$FRONTEND"
 npm ci --silent
 npm run build
+
+sudo mkdir -p "$WEB_ROOT/dist"
 sudo cp -r dist/. "$WEB_ROOT/dist/"
-echo "    Frontend copied to $WEB_ROOT/dist/"
 
+# ── 5. Fix permissions ────────────────────────────────────
 echo ""
-echo "==> [3/5] Building & starting Docker containers..."
-cd "$APP_DIR"
-docker compose build --no-cache
-docker compose up -d
+echo "==> [5/6] Fixing web root permissions..."
+sudo chown -R ubuntu:www-data "$WEB_ROOT"
+sudo chmod -R 755 "$WEB_ROOT"
 
+# ── 6. Restart services ───────────────────────────────────
 echo ""
-echo "==> [4/5] Waiting for backend to be ready..."
-for i in $(seq 1 15); do
-    if docker compose exec -T backend python manage.py check --deploy > /dev/null 2>&1; then
-        echo "    Backend ready."
-        break
-    fi
-    echo "    Waiting... ($i/15)"
-    sleep 3
-done
-
-echo ""
-echo "==> [5/5] Reloading Nginx..."
+echo "==> [6/6] Restarting Gunicorn & reloading Nginx..."
+sudo systemctl restart gunicorn-cloths
 sudo nginx -t && sudo systemctl reload nginx
 
 echo ""
 echo "======================================================"
 echo "  Deployment complete!"
-PUBLIC_IP=$(curl -s --max-time 3 http://checkip.amazonaws.com 2>/dev/null || echo "YOUR_EC2_IP")
-echo "  Site:  http://$PUBLIC_IP"
-echo "  Admin: http://$PUBLIC_IP/admin/"
-echo "  API:   http://$PUBLIC_IP/api/v1/"
+echo "  Site:  http://51.20.91.11"
+echo "  Admin: http://51.20.91.11/admin/"
+echo "  API:   http://51.20.91.11/api/v1/"
 echo "======================================================"
-
-echo ""
-echo "--- Docker container status ---"
-docker compose ps

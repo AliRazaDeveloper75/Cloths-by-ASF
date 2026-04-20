@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    name: SSH deploy to EC2
+    name: SSH → EC2 deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -17,6 +17,4 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key:      ${{ secrets.EC2_SSH_KEY }}
           timeout:  300s
-          script: |
-            cd /home/${{ secrets.EC2_USER }}/Cloths-by-ASF
-            bash scripts/deploy.sh
+          script: bash /home/ubuntu/Cloths-by-ASF/scripts/deploy.sh
