@@ -6,7 +6,7 @@ set -e
 EC2_USER="${USER:-ubuntu}"
 APP_DIR="/home/$EC2_USER/Cloths-by-ASF"
 WEB_ROOT="/var/www/cloths-by-asf"
-
+ 
 echo "==> Updating system packages..."
 sudo apt-get update && sudo apt-get upgrade -y
 
