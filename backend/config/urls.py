@@ -46,7 +46,7 @@ def health(request):
     <div class="links">
       <a class="primary" href="/api/docs/">Browse API Docs (Swagger)</a>
       <a class="ghost"   href="/api/redoc/">ReDoc Reference</a>
-      <a class="ghost"   href="/admin/">Django Admin Panel</a>
+      <a class="ghost"   href="/django-admin/">Django Admin Panel</a>
     </div>
   </div>
 </body>

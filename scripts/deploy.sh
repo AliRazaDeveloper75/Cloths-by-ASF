@@ -40,7 +40,9 @@ sudo cp -r "$BACKEND/staticfiles/." "$WEB_ROOT/staticfiles/"
 echo ""
 echo "==> [4/6] Building React frontend..."
 cd "$FRONTEND"
-npm ci --silent
+# Increase Node memory limit to avoid OOM crash on t3.micro
+export NODE_OPTIONS="--max-old-space-size=512"
+npm ci --prefer-offline --silent 2>/dev/null || npm install --silent
 npm run build
 
 sudo mkdir -p "$WEB_ROOT/dist"
@@ -61,7 +63,8 @@ sudo nginx -t && sudo systemctl reload nginx
 echo ""
 echo "======================================================"
 echo "  Deployment complete!"
-echo "  Site:  http://51.20.91.11"
-echo "  Admin: http://51.20.91.11/admin/"
-echo "  API:   http://51.20.91.11/api/v1/"
+echo "  Site:        https://afscloths.com"
+echo "  Admin:       https://afscloths.com/admin/login"
+echo "  Django Admin:https://afscloths.com/django-admin/"
+echo "  API:         https://afscloths.com/api/v1/"
 echo "======================================================"
