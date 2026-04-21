@@ -13,7 +13,7 @@ export default function Layout() {
       <main className="flex-1">
         <Outlet />
       </main>
-      <Footer />
+      <Footer /> 
 
       {/* ── Floating WhatsApp (bottom-left) ── */}
       <a
