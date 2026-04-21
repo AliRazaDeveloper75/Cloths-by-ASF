@@ -55,7 +55,7 @@ def health(request):
 
 urlpatterns = [
     path('', health, name='health'),
-    path('admin/', admin.site.urls),
+    path('django-admin/', admin.site.urls),
 
     # API v1
     path('api/v1/auth/', include('apps.users.urls')),

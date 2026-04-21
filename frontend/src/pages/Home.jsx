@@ -21,8 +21,8 @@ const HERO_SLIDES = [
     subtitle: 'Discover the latest premium fashion curated just for you — lawn, chiffon & more',
     cta: 'Shop Now', ctaLink: '/products',
     secondary: 'View Featured', secondaryLink: '/products?is_featured=true',
-    image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=85&fit=crop',
-    overlay: 'linear-gradient(105deg, rgba(10,10,30,0.85) 0%, rgba(10,10,30,0.50) 55%, rgba(10,10,30,0.15) 100%)',
+    image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1920&q=90&fit=crop',
+    overlay: 'linear-gradient(105deg, rgba(10,10,30,0.82) 0%, rgba(10,10,30,0.45) 55%, rgba(10,10,30,0.10) 100%)',
     accentColor: '#f09c27', tag: 'Spring Collection',
   },
   {
@@ -31,8 +31,8 @@ const HERO_SLIDES = [
     subtitle: 'Elegant abayas, casual kameez & chic accessories — crafted with love',
     cta: 'Explore Women', ctaLink: '/products?category=women',
     secondary: 'All Products', secondaryLink: '/products',
-    image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=85&fit=crop',
-    overlay: 'linear-gradient(105deg, rgba(40,5,20,0.85) 0%, rgba(40,5,20,0.50) 55%, rgba(40,5,20,0.10) 100%)',
+    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1920&q=90&fit=crop',
+    overlay: 'linear-gradient(105deg, rgba(50,5,25,0.82) 0%, rgba(50,5,25,0.45) 55%, rgba(50,5,25,0.08) 100%)',
     accentColor: '#f472b6', tag: 'Exclusive Styles',
   },
   {
@@ -41,8 +41,8 @@ const HERO_SLIDES = [
     subtitle: "Limited time sale on selected items — shop the best deals before they're gone",
     cta: 'View Sale', ctaLink: '/products?has_discount=true',
     secondary: 'All Products', secondaryLink: '/products',
-    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1920&q=85&fit=crop',
-    overlay: 'linear-gradient(105deg, rgba(80,25,0,0.85) 0%, rgba(80,25,0,0.50) 55%, rgba(80,25,0,0.10) 100%)',
+    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1920&q=90&fit=crop',
+    overlay: 'linear-gradient(105deg, rgba(80,20,0,0.82) 0%, rgba(80,20,0,0.45) 55%, rgba(80,20,0,0.08) 100%)',
     accentColor: '#fb923c', tag: 'Limited Offer',
   },
   {
@@ -51,8 +51,8 @@ const HERO_SLIDES = [
     subtitle: 'Refined kameez, shalwar suits & formal wear — dress to impress every occasion',
     cta: "Shop Men's", ctaLink: '/products?category=men',
     secondary: 'All Products', secondaryLink: '/products',
-    image: 'https://images.unsplash.com/photo-1617137968427-85924c800a22?w=1920&q=85&fit=crop',
-    overlay: 'linear-gradient(105deg, rgba(5,15,40,0.85) 0%, rgba(5,15,40,0.52) 55%, rgba(5,15,40,0.12) 100%)',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=90&fit=crop',
+    overlay: 'linear-gradient(105deg, rgba(5,15,40,0.82) 0%, rgba(5,15,40,0.48) 55%, rgba(5,15,40,0.10) 100%)',
     accentColor: '#60a5fa', tag: 'Men Collection',
   },
   {
@@ -61,8 +61,8 @@ const HERO_SLIDES = [
     subtitle: 'Proudly crafted by skilled Pakistani artisans — wear culture, wear pride',
     cta: 'Discover Now', ctaLink: '/products',
     secondary: 'Our Story', secondaryLink: '/about',
-    image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1920&q=85&fit=crop',
-    overlay: 'linear-gradient(105deg, rgba(10,30,15,0.85) 0%, rgba(10,30,15,0.50) 55%, rgba(10,30,15,0.10) 100%)',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=90&fit=crop',
+    overlay: 'linear-gradient(105deg, rgba(10,30,15,0.82) 0%, rgba(10,30,15,0.45) 55%, rgba(10,30,15,0.08) 100%)',
     accentColor: '#34d399', tag: 'Local Pride',
   },
 ]
@@ -167,116 +167,201 @@ export default function Home() {
       {/* ═══════════════════════════════════════
           HERO SLIDER
       ═══════════════════════════════════════ */}
-      <section className="relative overflow-hidden text-white select-none" style={{ minHeight: '92vh' }}>
+      <section className="relative overflow-hidden text-white select-none" style={{ height: '100svh', minHeight: '640px', maxHeight: '960px' }}>
 
+        {/* Background slides */}
         {HERO_SLIDES.map((s, i) => (
-          <div key={i} className="absolute inset-0 transition-opacity duration-[1400ms]"
-            style={{ opacity: i === slide ? 1 : 0 }}>
-            <img src={s.image} alt="" className="w-full h-full object-cover object-top" />
+          <div key={i} className="absolute inset-0"
+            style={{ opacity: i === slide ? 1 : 0, transition: 'opacity 1200ms cubic-bezier(0.4,0,0.2,1)', zIndex: 1 }}>
+            <img src={s.image} alt="" className="w-full h-full object-cover"
+              style={{ objectPosition: 'center 20%', transform: i === slide ? 'scale(1.04)' : 'scale(1)', transition: 'transform 6000ms ease-out' }} />
             <div className="absolute inset-0" style={{ background: s.overlay }} />
+            {/* Bottom vignette */}
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 45%)' }} />
           </div>
         ))}
 
-        {/* Subtle grain texture */}
-        <div className="absolute inset-0 z-10 pointer-events-none opacity-[0.04]"
-          style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+        {/* Animated noise texture */}
+        <div className="absolute inset-0 z-10 pointer-events-none"
+          style={{ background: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\' opacity=\'0.03\'/%3E%3C/svg%3E")', opacity: 0.4 }} />
 
-        {/* Slide counter */}
-        <div className="absolute top-6 right-8 z-30 hidden md:flex items-center gap-2">
-          <span className="text-4xl font-heading font-black text-white/80 tabular-nums leading-none">{String(slide + 1).padStart(2, '0')}</span>
-          <div className="flex flex-col gap-0.5">
-            <div className="w-8 h-0.5 bg-white/20 rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-[5500ms]" style={{ background: cur.accentColor, width: '100%' }} />
-            </div>
-            <span className="text-white/35 text-xs font-medium">{String(HERO_SLIDES.length).padStart(2, '0')}</span>
-          </div>
-        </div>
-
-        {/* Main content */}
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center" style={{ minHeight: '92vh' }}>
-          <div className="max-w-2xl pt-20 pb-36 md:pb-28">
-
-            {/* Social proof pill */}
-            <div className="flex items-center gap-3 mb-5">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-sm"
-                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.20)', color: cur.accentColor }}>
-                <HiOutlineSparkles className="w-3.5 h-3.5" /> {cur.badge}
-              </span>
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs text-white/60 backdrop-blur-sm"
-                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                <FaStar className="w-3 h-3 text-yellow-400" /> Trusted by 10,000+ customers
-              </span>
-            </div>
-
-            {/* Title */}
-            <h1 className="font-heading font-black leading-[0.95] mb-5 drop-shadow-2xl tracking-tight"
-              style={{ fontSize: 'clamp(2.8rem, 6.5vw, 5.8rem)' }}>
-              {cur.title}{' '}
-              <span style={{ color: cur.accentColor, WebkitTextStroke: '0' }}>{cur.titleHighlight}</span>
-            </h1>
-
-            <div className="w-16 h-1 rounded-full mb-5" style={{ background: cur.accentColor }} />
-
-            <p className="text-base md:text-lg text-white/75 mb-8 leading-relaxed max-w-xl">
-              {cur.subtitle}
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-3 mb-8">
-              <Link to={cur.ctaLink}
-                className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-2xl active:scale-95"
-                style={{ background: cur.accentColor, color: '#0f0f0f', boxShadow: `0 8px 32px ${cur.accentColor}55` }}>
-                {cur.cta} <FaArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <Link to={cur.secondaryLink}
-                className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl font-bold text-sm border border-white/30 text-white backdrop-blur-md hover:bg-white hover:text-gray-900 transition-all active:scale-95">
-                {cur.secondary}
-              </Link>
-            </div>
-
-            {/* Trust micro-badges */}
-            <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-white/50">
-              <span className="flex items-center gap-1.5"><MdLocalShipping className="w-3.5 h-3.5" style={{ color: cur.accentColor }} /> Free shipping PKR 2,000+</span>
-              <span className="flex items-center gap-1.5"><FaUndo className="w-3 h-3" style={{ color: cur.accentColor }} /> 7-day returns</span>
-              <span className="flex items-center gap-1.5"><FaLock className="w-3 h-3" style={{ color: cur.accentColor }} /> Secure checkout</span>
-              <span className="flex items-center gap-1.5"><FaShoppingBag className="w-3 h-3" style={{ color: cur.accentColor }} /> Cash on delivery</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Thumbnail strip */}
-        <div className="absolute bottom-0 left-0 right-0 z-30 hidden md:flex">
+        {/* ── Left vertical progress rail (desktop) ── */}
+        <div className="absolute left-6 top-1/2 -translate-y-1/2 z-30 hidden lg:flex flex-col items-center gap-4">
           {HERO_SLIDES.map((s, i) => (
-            <button key={i} onClick={() => setSlide(i)}
-              className="relative flex-1 h-[88px] overflow-hidden transition-all duration-300 group"
-              style={{ opacity: i === slide ? 1 : 0.45 }}>
-              <img src={s.image} alt="" className="w-full h-full object-cover object-top scale-105 group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0" style={{ background: i === slide ? 'rgba(0,0,0,0.30)' : 'rgba(0,0,0,0.55)' }} />
-              {i === slide && <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: cur.accentColor }} />}
-              <p className="absolute bottom-2.5 left-0 right-0 text-center text-white text-[10px] font-bold tracking-wider uppercase px-1">{s.tag}</p>
+            <button key={i} onClick={() => setSlide(i)} className="group flex items-center gap-2.5">
+              <div className="relative overflow-hidden rounded-full"
+                style={{ width: i === slide ? '3px' : '2px', height: i === slide ? '56px' : '28px', background: 'rgba(255,255,255,0.20)', transition: 'all 400ms ease' }}>
+                {i === slide && (
+                  <div className="absolute inset-x-0 top-0 rounded-full" style={{ height: '100%', background: cur.accentColor }} />
+                )}
+              </div>
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-bold tracking-widest uppercase text-white/70 whitespace-nowrap"
+                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>{s.tag}</span>
             </button>
           ))}
         </div>
 
+        {/* ── Main content ── */}
+        <div className="relative z-20 h-full flex flex-col justify-center">
+          <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-16 grid lg:grid-cols-2 gap-8 items-center">
+
+            {/* Text column */}
+            <div className="pt-24 pb-44 lg:pt-0 lg:pb-0 lg:pl-10">
+
+              {/* Badge */}
+              <div key={`badge-${slide}`}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-xs font-extrabold uppercase tracking-[0.18em]"
+                style={{
+                  background: `${cur.accentColor}22`,
+                  border: `1px solid ${cur.accentColor}55`,
+                  color: cur.accentColor,
+                  animation: 'slideDown 0.5s ease both',
+                }}>
+                <HiOutlineSparkles className="w-3.5 h-3.5" /> {cur.badge}
+              </div>
+
+              {/* Headline */}
+              <h1 key={`title-${slide}`} className="font-heading font-black tracking-tight leading-[0.9] mb-4 drop-shadow-2xl"
+                style={{ fontSize: 'clamp(3rem, 6vw, 5.5rem)', animation: 'slideUp 0.55s 0.08s ease both' }}>
+                {cur.title}<br />
+                <span style={{ color: cur.accentColor }}>{cur.titleHighlight}</span>
+              </h1>
+
+              {/* Accent line */}
+              <div key={`line-${slide}`} className="mb-5 rounded-full"
+                style={{ width: '64px', height: '4px', background: `linear-gradient(90deg, ${cur.accentColor}, ${cur.accentColor}44)`, animation: 'expandWidth 0.5s 0.2s ease both' }} />
+
+              {/* Subtitle */}
+              <p key={`sub-${slide}`} className="text-white/70 leading-relaxed mb-8 max-w-md"
+                style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)', animation: 'slideUp 0.55s 0.18s ease both' }}>
+                {cur.subtitle}
+              </p>
+
+              {/* CTAs */}
+              <div key={`cta-${slide}`} className="flex flex-wrap gap-3 mb-8"
+                style={{ animation: 'slideUp 0.55s 0.26s ease both' }}>
+                <Link to={cur.ctaLink}
+                  className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-2xl font-bold text-sm transition-all hover:scale-105 active:scale-95"
+                  style={{ background: cur.accentColor, color: '#0f0f0f', boxShadow: `0 10px 40px ${cur.accentColor}50` }}>
+                  {cur.cta}
+                  <span className="w-5 h-5 rounded-full bg-black/15 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                    <FaArrowRight className="w-2.5 h-2.5" />
+                  </span>
+                </Link>
+                <Link to={cur.secondaryLink}
+                  className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-2xl font-bold text-sm border text-white hover:bg-white hover:text-gray-900 transition-all active:scale-95"
+                  style={{ borderColor: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(12px)', background: 'rgba(255,255,255,0.07)' }}>
+                  {cur.secondary}
+                </Link>
+              </div>
+
+              {/* Trust row */}
+              <div key={`trust-${slide}`} className="flex flex-wrap gap-x-6 gap-y-2"
+                style={{ animation: 'slideUp 0.55s 0.34s ease both' }}>
+                {[
+                  [MdLocalShipping, 'Free shipping'],
+                  [FaUndo, '7-day returns'],
+                  [FaLock, 'Secure pay'],
+                  [FaShoppingBag, 'COD available'],
+                ].map(([Icon, label]) => (
+                  <span key={label} className="flex items-center gap-1.5 text-xs text-white/50">
+                    <Icon className="w-3 h-3" style={{ color: `${cur.accentColor}cc` }} /> {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: floating product highlight panel (desktop only) */}
+            <div className="hidden lg:flex justify-end items-center pr-4">
+              <div key={`panel-${slide}`} className="relative w-72 xl:w-80"
+                style={{ animation: 'panelIn 0.65s 0.1s ease both' }}>
+                {/* Main image frame */}
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl"
+                  style={{ aspectRatio: '3/4', border: `1px solid ${cur.accentColor}33` }}>
+                  <img src={cur.image} alt="" className="w-full h-full object-cover" style={{ objectPosition: 'center 15%' }} />
+                  <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${cur.accentColor}22 0%, transparent 50%)` }} />
+
+                  {/* Tag pill on image */}
+                  <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold"
+                    style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(12px)', color: cur.accentColor, border: `1px solid ${cur.accentColor}44` }}>
+                    {cur.tag}
+                  </div>
+
+                  {/* Bottom overlay info */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4"
+                    style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)' }}>
+                    <p className="text-white text-sm font-bold leading-tight">{cur.title} {cur.titleHighlight}</p>
+                    <p className="text-white/60 text-xs mt-0.5">Explore Collection →</p>
+                  </div>
+                </div>
+
+                {/* Floating stats badge */}
+                <div className="absolute -bottom-5 -left-8 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3"
+                  style={{ background: 'rgba(15,15,25,0.85)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.10)' }}>
+                  <span className="text-2xl font-black" style={{ color: cur.accentColor }}>4.9</span>
+                  <div>
+                    <div className="flex gap-0.5 mb-0.5">
+                      {[...Array(5)].map((_, k) => <FaStar key={k} className="w-2.5 h-2.5 text-yellow-400" />)}
+                    </div>
+                    <p className="text-white/50 text-[10px]">10k+ reviews</p>
+                  </div>
+                </div>
+
+                {/* Decorative glow ring */}
+                <div className="absolute -inset-3 rounded-[2rem] -z-10 opacity-20 blur-2xl"
+                  style={{ background: cur.accentColor }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Bottom thumbnail nav (desktop) ── */}
+        <div className="absolute bottom-0 left-0 right-0 z-30 hidden md:block lg:hidden">
+          <div className="flex">
+            {HERO_SLIDES.map((s, i) => (
+              <button key={i} onClick={() => setSlide(i)}
+                className="relative flex-1 overflow-hidden transition-all duration-500 group"
+                style={{ height: i === slide ? '76px' : '64px', opacity: i === slide ? 1 : 0.5 }}>
+                <img src={s.image} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" style={{ objectPosition: 'center 20%' }} />
+                <div className="absolute inset-0" style={{ background: i === slide ? 'rgba(0,0,0,0.25)' : 'rgba(0,0,0,0.52)' }} />
+                <div className="absolute top-0 left-0 right-0 h-[3px] transition-all duration-300"
+                  style={{ background: i === slide ? cur.accentColor : 'transparent' }} />
+                <p className="absolute inset-0 flex items-end justify-center pb-2 text-white text-[9px] font-black tracking-widest uppercase">{s.tag}</p>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Bottom left: large slide nav (large desktop) ── */}
+        <div className="absolute bottom-8 right-10 z-30 hidden lg:flex items-center gap-4">
+          <button onClick={() => setSlide((slide - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
+            className="w-12 h-12 rounded-full flex items-center justify-center border border-white/20 text-white hover:border-white/50 transition-all hover:scale-105 active:scale-95"
+            style={{ background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(16px)' }}>
+            <FaArrowLeft className="w-3.5 h-3.5" />
+          </button>
+          <span className="text-white/40 font-mono text-sm">{String(slide + 1).padStart(2,'0')} / {String(HERO_SLIDES.length).padStart(2,'0')}</span>
+          <button onClick={() => setSlide((slide + 1) % HERO_SLIDES.length)}
+            className="w-12 h-12 rounded-full flex items-center justify-center border border-white/20 text-white hover:border-white/50 transition-all hover:scale-105 active:scale-95"
+            style={{ background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(16px)' }}>
+            <FaArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
         {/* Mobile dots */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30 md:hidden">
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30 md:hidden">
           {HERO_SLIDES.map((_, i) => (
             <button key={i} onClick={() => setSlide(i)} className="rounded-full transition-all duration-300"
-              style={{ width: i === slide ? '28px' : '7px', height: '7px', background: i === slide ? cur.accentColor : 'rgba(255,255,255,0.35)' }} />
+              style={{ width: i === slide ? '32px' : '7px', height: '7px', background: i === slide ? cur.accentColor : 'rgba(255,255,255,0.30)' }} />
           ))}
         </div>
 
-        {/* Arrows */}
-        <button onClick={() => setSlide((slide - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
-          className="absolute left-4 top-1/2 -translate-y-10 z-30 w-11 h-11 rounded-full hidden md:flex items-center justify-center text-white border border-white/20 hover:border-white/50 transition-all hover:scale-110"
-          style={{ background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(12px)' }}>
-          <FaArrowLeft className="w-3.5 h-3.5" />
-        </button>
-        <button onClick={() => setSlide((slide + 1) % HERO_SLIDES.length)}
-          className="absolute right-4 top-1/2 -translate-y-10 z-30 w-11 h-11 rounded-full hidden md:flex items-center justify-center text-white border border-white/20 hover:border-white/50 transition-all hover:scale-110"
-          style={{ background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(12px)' }}>
-          <FaArrowRight className="w-3.5 h-3.5" />
-        </button>
+        {/* ── CSS keyframe animations ── */}
+        <style>{`
+          @keyframes slideDown { from { opacity:0; transform:translateY(-12px) } to { opacity:1; transform:translateY(0) } }
+          @keyframes slideUp   { from { opacity:0; transform:translateY(18px)  } to { opacity:1; transform:translateY(0) } }
+          @keyframes expandWidth { from { width:0 } to { width:64px } }
+          @keyframes panelIn   { from { opacity:0; transform:translateX(24px) scale(0.96) } to { opacity:1; transform:translateX(0) scale(1) } }
+        `}</style>
       </section>
 
       {/* ═══════════════════════════════════════
