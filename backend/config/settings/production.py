@@ -1,6 +1,7 @@
 """
 Production settings for AWS EC2 deployment.
 """
+from pathlib import Path
 from .base import *
 
 DEBUG = False
@@ -48,7 +49,7 @@ if USE_S3:
     MEDIA_URL = f"https://{config('AWS_STORAGE_BUCKET_NAME')}.s3.amazonaws.com/"
 else:
     MEDIA_URL  = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
+    MEDIA_ROOT = Path('/var/www/cloths-by-asf/media')
 
 # CORS
 CORS_ALLOWED_ORIGINS   = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())

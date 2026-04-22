@@ -51,8 +51,10 @@ sudo cp -r dist/. "$WEB_ROOT/dist/"
 # ── 5. Fix permissions ────────────────────────────────────
 echo ""
 echo "==> [5/6] Fixing web root permissions..."
+sudo mkdir -p "$WEB_ROOT/media"
 sudo chown -R ubuntu:www-data "$WEB_ROOT"
 sudo chmod -R 755 "$WEB_ROOT"
+sudo chmod -R 775 "$WEB_ROOT/media"
 
 # ── 6. Restart services ───────────────────────────────────
 echo ""
